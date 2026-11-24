@@ -161,7 +161,14 @@ This project demonstrates practical understanding of:
 
 ## 📸 Screenshots
 
-> Dashboard, phishing scan results, simulation landing page, and department charts — see `/templates/` for the UI.
+### 1. Luxury Black & White Threat Inspector
+![Threat Scanner Dashboard](assets/media_showcase_scanner.png)
+
+### 2. Behavioral Teachable Moment & Remediation Micro-Quiz
+![Teachable Moment Remediation](assets/media_teachable_moment_quiz.png)
+
+### 3. Formal Executive Incident Audit Report
+![Incident Audit Report](assets/media_incident_report_audit.png)
 
 ---
 
