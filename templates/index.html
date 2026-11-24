@@ -679,83 +679,355 @@ Generating simulation drill...
 
 
         <!-- ============================================================ -->
-        <!-- TAB 4: AWARENESS & DEFENSE GUIDE                              -->
+        <!-- TAB 4: VISUAL DEFENSE LAB & INTERACTIVE ANATOMY DISSECTOR     -->
         <!-- ============================================================ -->
-        <section id="tab-training" class="tab-content hidden space-y-7">
+        <section id="tab-training" class="tab-content hidden space-y-8">
 
-            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-2">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-mono text-zinc-300">
-                    <i class="fa-solid fa-book-skull text-white text-xs"></i>
-                    <span>Human Firewall Defense Playbook</span>
+            <!-- Visual Lab Header -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="space-y-1.5 max-w-2xl">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-mono text-zinc-300">
+                        <i class="fa-solid fa-microscope text-white text-xs"></i>
+                        <span>Visual Threat Laboratory & Interactive Anatomy Dissector</span>
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-white tracking-tight">Interactive Visual Phishing Dissector</h2>
+                    <p class="text-xs text-zinc-400 leading-relaxed">
+                        Visual memory has an 80%+ retention rate. Click on the pulsing interactive hotspots on the mock email below to explore the psychological anatomy of real-world deception.
+                    </p>
                 </div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">How to Identify Social Engineering</h2>
-                <p class="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-                    Over 90% of global breaches start through deceptive human manipulation. Train your intuition using these foundational rules of engagement.
-                </p>
+                <div class="flex items-center space-x-2 bg-zinc-900 border border-white/10 px-4 py-2 rounded-2xl text-xs font-mono text-zinc-300">
+                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                    <span>Interactive Dissection Lab</span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 1. THE INTERACTIVE EMAIL DISSECTOR (SPOT-THE-PHISH) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-7">
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-stopwatch"></i>
+                <!-- Left Column: The Interactive Mock Email Client with Pulsing Hotspots (7 cols) -->
+                <div class="lg:col-span-7 glass-card rounded-3xl p-6 sm:p-7 space-y-5 border border-white/10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/[0.08] pb-3.5">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                                <span class="ml-2 font-mono text-[11px] text-zinc-400 font-semibold">Simulated Inbox Client — Threat Inspection</span>
+                            </div>
+                            <span class="text-[10px] font-mono bg-red-950 text-red-300 border border-red-800 px-2.5 py-0.5 rounded-full">
+                                4 Hotspots Active
+                            </span>
+                        </div>
+
+                        <!-- Email Envelope Container with Relative Hotspot Pins -->
+                        <div class="relative bg-black/70 border border-white/10 rounded-2xl p-5 space-y-4 text-xs font-sans">
+                            
+                            <!-- HOTSPOT 1: Sender Header -->
+                            <div onclick="selectHotspot('sender')" id="spot-sender-box" class="cursor-pointer group relative p-3 rounded-xl border border-dashed border-red-500/40 hover:border-red-400 bg-red-950/10 hover:bg-red-950/20 transition-all">
+                                <div class="absolute -top-2.5 -left-2.5 w-6 h-6 rounded-full bg-red-600 text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-bounce">
+                                    1
+                                </div>
+                                <div class="flex flex-col space-y-1">
+                                    <div class="flex items-center text-[11px]">
+                                        <span class="text-zinc-500 w-14 font-semibold">From:</span>
+                                        <span class="text-white font-semibold font-mono">Microsoft 365 Team &lt;<span class="text-red-400 font-bold underline decoration-wavy">support@micros0ft-portal-auth.com</span>&gt;</span>
+                                    </div>
+                                    <div class="flex items-center text-[11px]">
+                                        <span class="text-zinc-500 w-14 font-semibold">Subject:</span>
+                                        <span class="text-white font-bold">CRITICAL: Your Microsoft 365 Access Expires in 2 Hours</span>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] text-zinc-400 font-mono mt-1 block group-hover:text-red-300">👆 Click to dissect sender address spoofing</span>
+                            </div>
+
+                            <!-- HOTSPOT 2: Panic & Urgency Banner -->
+                            <div onclick="selectHotspot('urgency')" id="spot-urgency-box" class="cursor-pointer group relative p-3 rounded-xl border border-dashed border-amber-500/40 hover:border-amber-400 bg-amber-950/10 hover:bg-amber-950/20 transition-all">
+                                <div class="absolute -top-2.5 -left-2.5 w-6 h-6 rounded-full bg-amber-500 text-black font-mono font-bold text-[10px] flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.8)]">
+                                    2
+                                </div>
+                                <div class="flex items-center space-x-2 text-amber-300 text-xs font-semibold">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>⚠️ IMMEDIATE ACTION REQUIRED: Account will be restricted at 5:00 PM today.</span>
+                                </div>
+                                <span class="text-[9px] text-zinc-400 font-mono mt-1 block group-hover:text-amber-300">👆 Click to inspect psychological panic trigger</span>
+                            </div>
+
+                            <!-- Email Body Text -->
+                            <div class="text-zinc-300 space-y-2 leading-relaxed text-xs">
+                                <p>Dear Employee,</p>
+                                <p>We detected an unverified security configuration on your enterprise Microsoft 365 session. Due to mandatory IT compliance, your mailbox and OneDrive synchronization will be suspended immediately unless you confirm your identity below.</p>
+                            </div>
+
+                            <!-- HOTSPOT 3: Malicious Hyperlink -->
+                            <div onclick="selectHotspot('link')" id="spot-link-box" class="cursor-pointer group relative p-3 rounded-xl border border-dashed border-red-500/40 hover:border-red-400 bg-red-950/10 hover:bg-red-950/20 text-center transition-all">
+                                <div class="absolute -top-2.5 -left-2.5 w-6 h-6 rounded-full bg-red-600 text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-pulse">
+                                    3
+                                </div>
+                                <div class="inline-block bg-white text-black font-bold px-5 py-2.5 rounded-xl text-xs shadow-md">
+                                    👉 VERIFY CREDENTIALS & PREVENT SUSPENSION
+                                </div>
+                                <div class="mt-2 text-[10px] font-mono text-red-400 bg-black/80 px-2 py-1 rounded inline-block">
+                                    Hover Destination: <span class="underline">http://login-microsoft365-verify.com/auth?token=x89</span>
+                                </div>
+                                <span class="text-[9px] text-zinc-400 font-mono mt-1 block group-hover:text-red-300">👆 Click to dissect deceptive hyperlink anatomy</span>
+                            </div>
+
+                            <!-- HOTSPOT 4: Forged Generic Authority -->
+                            <div onclick="selectHotspot('authority')" id="spot-authority-box" class="cursor-pointer group relative p-3 rounded-xl border border-dashed border-blue-500/40 hover:border-blue-400 bg-blue-950/10 hover:bg-blue-950/20 transition-all">
+                                <div class="absolute -top-2.5 -left-2.5 w-6 h-6 rounded-full bg-blue-500 text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.8)]">
+                                    4
+                                </div>
+                                <p class="text-xs text-zinc-400 font-mono">
+                                    — IT Global Security & Compliance Office<br>
+                                    <span class="text-[10px] text-zinc-500">Automated Mail Distribution System (Do Not Reply)</span>
+                                </p>
+                                <span class="text-[9px] text-zinc-400 font-mono mt-1 block group-hover:text-blue-300">👆 Click to dissect forged authority & unpersonalized signatures</span>
+                            </div>
+
+                        </div>
                     </div>
-                    <h3 class="font-bold text-white text-sm">Artificial Urgency is Bait</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Phishing emails manufacture panic — *"Account terminates in 2 hours!"*. Real IT and corporate teams grant graceful transition windows. If pressured, intentionally slow down.
-                    </p>
+
+                    <div class="text-[11px] text-zinc-400 font-mono flex items-center justify-between border-t border-white/[0.08] pt-3">
+                        <span>💡 Tip: Click each numbered badge [1-4]</span>
+                        <span>Full Interactive Telemetry</span>
+                    </div>
                 </div>
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-link"></i>
+                <!-- Right Column: Dynamic Deep-Dive Dissection Panel (5 cols) -->
+                <div class="lg:col-span-5 glass-card rounded-3xl p-6 sm:p-7 space-y-5 border border-white/10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="border-b border-white/[0.08] pb-4 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span id="dissect-icon" class="w-8 h-8 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-sm">
+                                    <i class="fa-solid fa-crosshairs"></i>
+                                </span>
+                                <div>
+                                    <h3 id="dissect-title" class="font-bold text-white text-sm">Select a Hotspot to Dissect</h3>
+                                    <p id="dissect-category" class="text-[10px] font-mono text-zinc-400">Tactical Vector Analysis</p>
+                                </div>
+                            </div>
+                            <span id="dissect-severity" class="text-[10px] font-mono bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded-full">
+                                THREAT LEVEL: HIGH
+                            </span>
+                        </div>
+
+                        <!-- Graphical Breakdown Content -->
+                        <div id="dissect-content" class="space-y-4 text-xs text-zinc-300">
+                            <div class="bg-black/60 border border-white/10 rounded-2xl p-4 space-y-2">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-white flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-brain text-white"></i>
+                                    <span>The Psychological Trick</span>
+                                </span>
+                                <p id="dissect-psychology" class="text-xs text-zinc-300 leading-relaxed">
+                                    Click any numbered hotspot pin (1, 2, 3, or 4) on the email to see the cognitive manipulation breakdown, real vs. spoofed domain forensics, and how to verify it in real life.
+                                </p>
+                            </div>
+
+                            <div class="bg-black/60 border border-white/10 rounded-2xl p-4 space-y-2">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-red-400 flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <span>What the Attacker Hid</span>
+                                </span>
+                                <p id="dissect-hidden" class="text-xs text-zinc-300 leading-relaxed font-mono">
+                                    Select a pin to reveal hidden attacker tactics.
+                                </p>
+                            </div>
+
+                            <div class="bg-white/[0.04] border border-white/15 rounded-2xl p-4 space-y-2">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-shield-check"></i>
+                                    <span>Human Firewall Verification Rule</span>
+                                </span>
+                                <p id="dissect-rule" class="text-xs text-zinc-200 leading-relaxed font-semibold">
+                                    Always slow down when an email demands urgency or credential logins.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="font-bold text-white text-sm">Inspect Deceptive Hyperlinks</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Hover before you click. Look out for subtle typosquatting like <code class="text-zinc-200 bg-zinc-900 px-1 py-0.5 rounded border border-white/10">rnicrosoft.com</code> (r+n mimics m). Always navigate directly via bookmarks.
-                    </p>
+
+                    <!-- Visual Quick Switcher -->
+                    <div class="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-1.5">
+                        <button onclick="selectHotspot('sender')" class="flex-1 py-1.5 px-2 bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-white rounded-xl text-[10px] font-bold transition font-mono">
+                            #1 Sender
+                        </button>
+                        <button onclick="selectHotspot('urgency')" class="flex-1 py-1.5 px-2 bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-white rounded-xl text-[10px] font-bold transition font-mono">
+                            #2 Urgency
+                        </button>
+                        <button onclick="selectHotspot('link')" class="flex-1 py-1.5 px-2 bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-white rounded-xl text-[10px] font-bold transition font-mono">
+                            #3 Link
+                        </button>
+                        <button onclick="selectHotspot('authority')" class="flex-1 py-1.5 px-2 bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-white rounded-xl text-[10px] font-bold transition font-mono">
+                            #4 Authority
+                        </button>
+                    </div>
                 </div>
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-user-secret"></i>
+            </div>
+
+
+            <!-- 2. VISUAL ATTACK ANATOMY FLOWCHART (THE 4-STEP KILL CHAIN) -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+                <div class="border-b border-white/[0.08] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-bold text-white text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-diagram-project text-white"></i>
+                            <span>The 4-Stage Social Engineering Attack Chain (Visual Infographic)</span>
+                        </h3>
+                        <p class="text-xs text-zinc-400 mt-0.5">How an attacker moves from target reconnaissance to complete credential compromise.</p>
                     </div>
-                    <h3 class="font-bold text-white text-sm">Question Unprompted Authority</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Attackers impersonate executives requesting wire transfers or gift cards. Out-of-band phone verification prevents million-dollar BEC (Business Email Compromise) losses.
-                    </p>
+                    <span class="text-[10px] font-mono bg-zinc-900 border border-white/10 text-zinc-400 px-3 py-1 rounded-xl">
+                        DEFENSE-IN-DEPTH
+                    </span>
                 </div>
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-key"></i>
+                <!-- 4 Step Visual Chain Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+                    
+                    <!-- Step 1 -->
+                    <div class="bg-black/60 border border-white/10 p-5 rounded-2xl space-y-3 relative group hover:border-white/30 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="w-8 h-8 rounded-xl bg-zinc-900 border border-white/10 text-white font-mono font-bold text-xs flex items-center justify-center">
+                                01
+                            </span>
+                            <span class="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded">Reconnaissance</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-white text-sm">The Craft & Context</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                Attacker scouts your department on LinkedIn. Crafts an email mimicking tools you use daily (e.g. Microsoft 365, Slack, or HR Payroll).
+                            </p>
+                        </div>
+                        <div class="text-[10px] font-mono text-zinc-400 border-t border-white/[0.08] pt-2">
+                            <i class="fa-solid fa-eye mr-1 text-white"></i>Vector: Phishing Email
+                        </div>
                     </div>
-                    <h3 class="font-bold text-white text-sm">Guard Corporate Credentials</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        Legitimate administrators never request passwords or MFA authorization codes over chat or email. Treat any login prompt on an unverified domain as hostile.
-                    </p>
+
+                    <!-- Step 2 -->
+                    <div class="bg-black/60 border border-white/10 p-5 rounded-2xl space-y-3 relative group hover:border-white/30 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 font-mono font-bold text-xs flex items-center justify-center border border-amber-500/30">
+                                02
+                            </span>
+                            <span class="text-[10px] font-mono text-amber-400 bg-amber-950/50 px-2 py-0.5 rounded border border-amber-900/50">Cognitive Hijack</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-white text-sm">Emotional Urgency Hook</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                Panic is introduced: *"Account expires in 2 hours"* or *"Salary deposit held"*. This bypasses logical thinking and induces rushed action.
+                            </p>
+                        </div>
+                        <div class="text-[10px] font-mono text-amber-400/80 border-t border-white/[0.08] pt-2">
+                            <i class="fa-solid fa-bolt mr-1"></i>Tactic: Artificial Urgency
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-black/60 border border-white/10 p-5 rounded-2xl space-y-3 relative group hover:border-white/30 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="w-8 h-8 rounded-xl bg-red-500/20 text-red-400 font-mono font-bold text-xs flex items-center justify-center border border-red-500/30">
+                                03
+                            </span>
+                            <span class="text-[10px] font-mono text-red-400 bg-red-950/50 px-2 py-0.5 rounded border border-red-900/50">Execution</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-white text-sm">Deceptive Redirection</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                User clicks the fake button. The link routes to a cloned replica login page engineered to look 100% identical to your corporate portal.
+                            </p>
+                        </div>
+                        <div class="text-[10px] font-mono text-red-400/80 border-t border-white/[0.08] pt-2">
+                            <i class="fa-solid fa-link mr-1"></i>Tactic: Credential Harvesting
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-black/60 border border-white/10 p-5 rounded-2xl space-y-3 relative group hover:border-white/30 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 font-mono font-bold text-xs flex items-center justify-center border border-purple-500/30">
+                                04
+                            </span>
+                            <span class="text-[10px] font-mono text-purple-400 bg-purple-950/50 px-2 py-0.5 rounded border border-purple-900/50">Compromise</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-white text-sm">Session Hijacking</h4>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                Attacker intercepts username, password, and session token. Lateral movement commences inside corporate infrastructure.
+                            </p>
+                        </div>
+                        <div class="text-[10px] font-mono text-purple-400/80 border-t border-white/[0.08] pt-2">
+                            <i class="fa-solid fa-skull mr-1"></i>Result: Account Breach
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- 3. SIDE-BY-SIDE VISUAL COMPARISON: AUTHENTIC VS PHISHING CLONE -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
+                    <div>
+                        <h3 class="font-bold text-white text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-code-compare text-white"></i>
+                            <span>Side-by-Side Visual Inspection: Authentic vs. Phishing Clone</span>
+                        </h3>
+                        <p class="text-xs text-zinc-400 mt-0.5">Observe subtle forensic visual indicators separating official notices from adversary replicas.</p>
+                    </div>
                 </div>
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-at"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-sm">Scrutinize Sender Domains</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        The display name may claim *"Microsoft Executive Support"*, but the envelope header reveals a public Gmail or disposable domain. Inspect full sender headers.
-                    </p>
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/30 transition-all">
-                    <div class="w-10 h-10 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center text-white text-sm">
-                        <i class="fa-solid fa-shield-halved"></i>
+                    <!-- REAL / AUTHENTIC EMAIL -->
+                    <div class="bg-black/60 border border-emerald-500/30 p-5 rounded-2xl space-y-3 relative">
+                        <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2.5">
+                            <span class="text-xs font-bold text-emerald-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>AUTHENTIC CORPORATE EMAIL</span>
+                            </span>
+                            <span class="text-[10px] font-mono text-emerald-400/80 bg-emerald-950/60 px-2 py-0.5 rounded">Safe Verification</span>
+                        </div>
+                        <div class="space-y-2 text-xs text-zinc-300 font-sans">
+                            <div class="p-2 rounded bg-emerald-950/20 border border-emerald-500/20 font-mono text-[11px]">
+                                <span class="text-emerald-400 font-bold">Sender:</span> it-support@yourcompany.com (Official Domain)
+                            </div>
+                            <div class="p-2 rounded bg-emerald-950/20 border border-emerald-500/20 font-mono text-[11px]">
+                                <span class="text-emerald-400 font-bold">Salutation:</span> "Dear Gautam," (Personalized name from HR database)
+                            </div>
+                            <div class="p-2 rounded bg-emerald-950/20 border border-emerald-500/20 font-mono text-[11px]">
+                                <span class="text-emerald-400 font-bold">Link URL:</span> https://login.microsoftonline.com/auth (Standard Official SSL)
+                            </div>
+                            <div class="p-2 rounded bg-emerald-950/20 border border-emerald-500/20 font-mono text-[11px]">
+                                <span class="text-emerald-400 font-bold">Tone:</span> Clear grace period (14 days notification with IT contact extension)
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="font-bold text-white text-sm">Zero-Penalty Reporting</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">
-                        When in doubt, report suspicious items immediately. A healthy security culture rewards vigilance over silent hesitation.
-                    </p>
-                </div>
 
+                    <!-- FAKE / PHISHING CLONE -->
+                    <div class="bg-black/60 border border-red-500/30 p-5 rounded-2xl space-y-3 relative">
+                        <div class="flex items-center justify-between border-b border-red-500/20 pb-2.5">
+                            <span class="text-xs font-bold text-red-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>ADVERSARY PHISHING CLONE</span>
+                            </span>
+                            <span class="text-[10px] font-mono text-red-400/80 bg-red-950/60 px-2 py-0.5 rounded">High Hazard</span>
+                        </div>
+                        <div class="space-y-2 text-xs text-zinc-300 font-sans">
+                            <div class="p-2 rounded bg-red-950/20 border border-red-500/20 font-mono text-[11px]">
+                                <span class="text-red-400 font-bold">Sender:</span> support@micros0ft-portal-auth.com (Typosquatted domain)
+                            </div>
+                            <div class="p-2 rounded bg-red-950/20 border border-red-500/20 font-mono text-[11px]">
+                                <span class="text-red-400 font-bold">Salutation:</span> "Dear Employee / Team Member" (Generic automated greeting)
+                            </div>
+                            <div class="p-2 rounded bg-red-950/20 border border-red-500/20 font-mono text-[11px]">
+                                <span class="text-red-400 font-bold">Link URL:</span> http://login-microsoft365-verify.com/auth (Disposable unverified host)
+                            </div>
+                            <div class="p-2 rounded bg-red-950/20 border border-red-500/20 font-mono text-[11px]">
+                                <span class="text-red-400 font-bold">Tone:</span> Immediate panic ("Immediate suspension in 2 hours!")
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
         </section>
@@ -972,9 +1244,74 @@ Generating simulation drill...
             });
         }
 
+        // Hotspot Interactive Dissector
+        const HOTSPOTS = {
+            sender: {
+                title: "Hotspot #1: Spoofed Sender Address",
+                category: "Display Name vs Envelope Forensics",
+                severity: "CRITICAL SPOOFING",
+                icon: "fa-at",
+                psychology: "Attackers set the display name to 'Microsoft 365 Team' knowing that most humans only read the friendly display name. The true domain 'micros0ft-portal-auth.com' contains a subtle zero '0' substituting an 'o'.",
+                hidden: "Envelope header: Return-Path points to an unauthenticated external mail server. SPF & DMARC alignment failed.",
+                rule: "Always tap or expand the sender address to check the actual domain after the '@' symbol before trusting."
+            },
+            urgency: {
+                title: "Hotspot #2: Artificial Urgency Banner",
+                category: "Cognitive Panic & Time Pressure",
+                severity: "HIGH PSYCHOLOGICAL BAIT",
+                icon: "fa-clock",
+                psychology: "By stating 'Expires in 2 hours', the attacker triggers the human panic response. When people feel rushed, their analytical brain shuts off, making them click without inspecting links.",
+                hidden: "No legitimate corporate IT system terminates active employee accounts with a 2-hour unilateral notice.",
+                rule: "If an email induces immediate panic or haste, treat that feeling itself as a primary indicator of compromise."
+            },
+            link: {
+                title: "Hotspot #3: Deceptive Hyperlink Anchor",
+                category: "Typosquatting & Credential Harvester",
+                severity: "EXPLOIT DESTINATION",
+                icon: "fa-link",
+                psychology: "The button says 'VERIFY CREDENTIALS' in official corporate branding, but the destination URL points to 'login-microsoft365-verify.com'. This is a cloned landing page designed to capture credentials and 2FA tokens.",
+                hidden: "The domain was registered 3 days ago via a privacy-protected registrar, not Microsoft Corporation.",
+                rule: "Hover over all links before clicking. If the domain doesn't match the official provider root (e.g. microsoft.com), do not click."
+            },
+            authority: {
+                title: "Hotspot #4: Generic Authority Signature",
+                category: "Impersonation of Corporate Leadership",
+                severity: "SOCIAL ENGINEERING PRETEXT",
+                icon: "fa-user-shield",
+                psychology: "Signing as 'IT Global Security & Compliance Office' leverages obedience to authority. Attackers omit real IT analyst names or extensions to prevent victims from making a quick internal phone verification.",
+                hidden: "The automated disclaimer claims 'Do Not Reply' to discourage victims from asking questions.",
+                rule: "Real internal communications reference verifiable internal ticket numbers or designated helpdesk contacts."
+            }
+        };
+
+        function selectHotspot(key) {
+            const data = HOTSPOTS[key];
+            if (!data) return;
+
+            ['sender', 'urgency', 'link', 'authority'].forEach(k => {
+                const b = document.getElementById(`spot-${k}-box`);
+                if (b) {
+                    if (k === key) {
+                        b.classList.add('ring-2', 'ring-white', 'bg-white/[0.08]');
+                    } else {
+                        b.classList.remove('ring-2', 'ring-white', 'bg-white/[0.08]');
+                    }
+                }
+            });
+
+            document.getElementById('dissect-title').innerText = data.title;
+            document.getElementById('dissect-category').innerText = data.category;
+            document.getElementById('dissect-severity').innerText = data.severity;
+            document.getElementById('dissect-psychology').innerText = data.psychology;
+            document.getElementById('dissect-hidden').innerText = data.hidden;
+            document.getElementById('dissect-rule').innerText = data.rule;
+            document.getElementById('dissect-icon').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
+        }
+
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             autoGenerateSimulationEmail();
+            selectHotspot('sender');
         });
     </script>
 </body>
