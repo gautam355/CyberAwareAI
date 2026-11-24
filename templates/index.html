@@ -701,7 +701,7 @@ Generating simulation drill...
                 </div>
             </div>
 
-            <!-- MANDATORY AWARENESS VIDEO MASTERCLASS PLAYER -->
+            <!-- MANDATORY AWARENESS GRAPHIC ANIMATION & LAB PLAYER -->
             <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-4">
                 <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
                     <div class="flex items-center space-x-2.5">
@@ -709,23 +709,63 @@ Generating simulation drill...
                             <i class="fa-solid fa-play text-xs"></i>
                         </span>
                         <div>
-                            <h3 class="font-bold text-white text-base">Graphic Training Video: Anatomy of Modern Social Engineering</h3>
-                            <p class="text-xs text-zinc-400">Essential 2-minute masterclass on spotting weaponized urgency, cloaked domains, and BEC traps.</p>
+                            <h3 class="font-bold text-white text-base">Interactive Training Lab: Anatomy of Modern Social Engineering</h3>
+                            <p class="text-xs text-zinc-400">Step-by-step masterclass on spotting weaponized urgency, cloaked domains, and BEC traps.</p>
                         </div>
                     </div>
                     <span class="text-[10px] font-mono bg-zinc-900 border border-white/10 text-zinc-300 px-3 py-1 rounded-xl">
-                        MICRO-LEARNING MODULE
+                        INTERACTIVE SIMULATOR
                     </span>
                 </div>
 
-                <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl">
-                    <iframe class="w-full h-full"
-                        src="https://www.youtube-nocookie.com/embed/XBkzBrXllBo?rel=0&modestbranding=1" 
-                        title="Phishing Security Training Video" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                <!-- Interactive Animated Screen inside Tab 4 -->
+                <div class="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-black/90 p-6 sm:p-8 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span id="tab-scene-tag" class="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-red-950/80 text-red-400 border border-red-900">
+                            Module 01: The Bait & Weaponized Pretext
+                        </span>
+                        <span id="tab-scene-counter" class="text-xs font-mono text-zinc-500">1 / 4</span>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-zinc-950 border border-white/10 space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-white/20 flex items-center justify-center text-white text-lg">
+                            <i id="tab-scene-icon" class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <h4 id="tab-scene-title" class="text-base font-bold text-white">
+                            The Attacker Scouts Your Identity & Delivers the Lure
+                        </h4>
+                        <p id="tab-scene-desc" class="text-xs text-zinc-300 leading-relaxed font-sans">
+                            Attackers harvest employee names and departments from corporate directories and LinkedIn. They craft an authentic-looking Microsoft 365 or HR alert designed to look 100% normal on your screen.
+                        </p>
+                        <div id="tab-scene-takeaway" class="text-[11px] font-mono text-zinc-400 bg-black/60 p-2.5 rounded-xl border border-white/10">
+                            🔍 Red Flag: Display name says "Microsoft 365 Support" but actual email domain has spelling variations like 'micros0ft.com'.
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar & Switcher -->
+                    <div class="space-y-3 pt-2">
+                        <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
+                            <div id="tab-video-progress" class="bg-white h-full transition-all duration-300 w-1/4"></div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button onclick="tabPrevScene()" class="px-3 py-1.5 bg-zinc-900 hover:bg-white hover:text-black text-zinc-300 rounded-xl text-xs font-mono transition">
+                                    <i class="fa-solid fa-backward-step mr-1"></i>Prev
+                                </button>
+                                <button onclick="tabTogglePlay()" id="tab-btn-play-pause" class="px-4 py-1.5 bg-white text-black rounded-xl text-xs font-mono font-bold transition flex items-center space-x-1.5">
+                                    <i id="tab-play-icon" class="fa-solid fa-pause text-[10px]"></i>
+                                    <span id="tab-play-text">Auto-Playing</span>
+                                </button>
+                                <button onclick="tabNextScene()" class="px-3 py-1.5 bg-zinc-900 hover:bg-white hover:text-black text-zinc-300 rounded-xl text-xs font-mono transition">
+                                    Next<i class="fa-solid fa-forward-step ml-1"></i>
+                                </button>
+                            </div>
+                            <span class="text-[11px] font-mono text-zinc-400">
+                                4 Core Defensive Verification Principles
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
@@ -1351,10 +1391,91 @@ Generating simulation drill...
             document.getElementById('dissect-icon').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
         }
 
+        // Tab 4 Animated Presentation Masterclass
+        const TAB_SCENES = [
+            {
+                tag: "Module 01: The Bait & Weaponized Pretext",
+                icon: "fa-envelope-open-text",
+                title: "The Attacker Scouts Your Identity & Delivers the Lure",
+                desc: "Attackers harvest employee names and departments from corporate directories and LinkedIn. They craft an authentic-looking Microsoft 365 or HR alert designed to look 100% normal on your screen.",
+                takeaway: "🔍 Red Flag: Display name says 'Microsoft 365 Support' but actual email domain has spelling variations like 'micros0ft.com'."
+            },
+            {
+                tag: "Module 02: The Emotional Trigger",
+                icon: "fa-stopwatch",
+                title: "Manufactured Urgency: Bypassing Your Critical Thinking",
+                desc: "The email claims your password expires in 2 hours or your salary direct deposit is on hold. This triggers anxiety so you act immediately without verifying.",
+                takeaway: "⚡ Rule: Legitimate IT departments give days of advance notice and direct portal links, never 2-hour panic threats."
+            },
+            {
+                tag: "Module 03: The Deceptive Link",
+                icon: "fa-link",
+                title: "Hovering Reveals the True Destination",
+                desc: "The button text says 'VERIFY CREDENTIALS', but hovering over it reveals a spoofed destination like 'login-microsoft365-verify.com', not 'login.microsoftonline.com'.",
+                takeaway: "🔗 Rule: Always hover over any link on desktop, or long-press on mobile, to verify the actual domain destination."
+            },
+            {
+                tag: "Module 04: The Exploit & Defense",
+                icon: "fa-shield-halved",
+                title: "How to Block Credential Theft Forever",
+                desc: "If you clicked the simulated link today, don't worry — no passwords were typed. In real life, never enter passwords on links from emails, and use MFA (Multi-Factor Authentication).",
+                takeaway: "🛡️ Golden Rule: When in doubt, navigate to the official portal directly via your browser bookmarks."
+            }
+        ];
+
+        let tabSceneIdx = 0;
+        let isTabAutoPlaying = true;
+        let tabPlayInterval = null;
+
+        function tabRenderScene(idx) {
+            const s = TAB_SCENES[idx];
+            document.getElementById('tab-scene-tag').innerText = s.tag;
+            document.getElementById('tab-scene-icon').className = `fa-solid ${s.icon}`;
+            document.getElementById('tab-scene-title').innerText = s.title;
+            document.getElementById('tab-scene-desc').innerText = s.desc;
+            document.getElementById('tab-scene-takeaway').innerText = s.takeaway;
+            document.getElementById('tab-scene-counter').innerText = `${idx + 1} / ${TAB_SCENES.length}`;
+            document.getElementById('tab-video-progress').style.width = `${((idx + 1) / TAB_SCENES.length) * 100}%`;
+        }
+
+        function tabNextScene() {
+            tabSceneIdx = (tabSceneIdx + 1) % TAB_SCENES.length;
+            tabRenderScene(tabSceneIdx);
+        }
+
+        function tabPrevScene() {
+            tabSceneIdx = (tabSceneIdx - 1 + TAB_SCENES.length) % TAB_SCENES.length;
+            tabRenderScene(tabSceneIdx);
+        }
+
+        function tabTogglePlay() {
+            isTabAutoPlaying = !isTabAutoPlaying;
+            const btn = document.getElementById('tab-btn-play-pause');
+            const icon = document.getElementById('tab-play-icon');
+            const txt = document.getElementById('tab-play-text');
+            if (isTabAutoPlaying) {
+                icon.className = "fa-solid fa-pause text-[10px]";
+                txt.innerText = "Auto-Playing";
+                tabStartAutoPlay();
+            } else {
+                icon.className = "fa-solid fa-play text-[10px]";
+                txt.innerText = "Paused";
+                clearInterval(tabPlayInterval);
+            }
+        }
+
+        function tabStartAutoPlay() {
+            clearInterval(tabPlayInterval);
+            tabPlayInterval = setInterval(() => {
+                tabNextScene();
+            }, 5000);
+        }
+
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             autoGenerateSimulationEmail();
             selectHotspot('sender');
+            tabStartAutoPlay();
         });
     </script>
 </body>
