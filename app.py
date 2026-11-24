@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 
 import database
-from ai_engine import analyze_email_with_ai
+from ai_engine import analyze_email_with_ai, generate_simulation_email, SIMULATION_TEMPLATES
 
 load_dotenv()
 
@@ -112,7 +112,8 @@ def home():
         dashboard_data=dashboard_data_text,
         metrics=metrics,
         employees=employees,
-        sample_emails=SAMPLE_EMAILS
+        sample_emails=SAMPLE_EMAILS,
+        simulation_templates=SIMULATION_TEMPLATES
     )
 
 
@@ -173,6 +174,26 @@ def api_add_employee():
         return jsonify({"error": str(e)}), 400
     finally:
         conn.close()
+
+
+@app.route("/api/generate-simulation-email", methods=["POST"])
+def api_generate_simulation_email():
+    data = request.get_json() or {}
+    employee_name = data.get("employee", "Employee").strip() or "Employee"
+    template_id = data.get("template_id", "it_password")
+    custom_prompt = data.get("custom_prompt", "").strip() or None
+
+    base_url = request.host_url.rstrip("/")
+    tracking_url = f"{base_url}/click/{employee_name}"
+
+    res = generate_simulation_email(
+        template_id=template_id,
+        employee_name=employee_name,
+        tracking_url=tracking_url,
+        custom_prompt=custom_prompt
+    )
+    res["tracking_url"] = tracking_url
+    return jsonify({"success": True, "simulation_email": res})
 
 
 @app.route("/click/<employee>")

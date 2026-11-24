@@ -198,3 +198,127 @@ Email to analyze:
         result = analyze_email_heuristics(email_text, employee_name, employee_email)
         result["engine_used"] = "CyberAware Rule-Based Detection Engine (AI Offline)"
         return result
+
+
+SIMULATION_TEMPLATES = {
+    "it_password": {
+        "title": "Microsoft 365 Password Expiry",
+        "sender": "Microsoft 365 Support <no-reply@m365-security-update.com>",
+        "subject": "Action Required: Password Expiry Notification for {name}",
+        "body": (
+            "Hello {name},\n\n"
+            "Your organizational Microsoft 365 password is scheduled to expire in 2 hours. "
+            "To maintain uninterrupted access to your corporate email, OneDrive, and Teams, "
+            "please verify your credentials immediately using our secure verification portal:\n\n"
+            "👉 Verify Credentials: {link}\n\n"
+            "Failure to update before 5:00 PM today will result in temporary account lockout.\n\n"
+            "Regards,\n"
+            "Global IT Support Desk"
+        )
+    },
+    "hr_payroll": {
+        "title": "HR Salary & Direct Deposit Audit",
+        "sender": "Human Resources <hr-benefits@payroll-portal-auth.com>",
+        "subject": "URGENT: Annual Bonus & Direct Deposit Audit for {name}",
+        "body": (
+            "Dear {name},\n\n"
+            "Our internal finance & HR audit revealed an incomplete direct deposit submission for your account. "
+            "To prevent any hold on your upcoming salary transfer and year-end bonus disbursement, "
+            "please review your banking details via the employee self-service portal:\n\n"
+            "👉 Review & Confirm Account: {link}\n\n"
+            "Please confirm your details before end of day today.\n\n"
+            "Best regards,\n"
+            "Human Resources & Payroll Compliance"
+        )
+    },
+    "package_delivery": {
+        "title": "Courier Package Delivery on Hold",
+        "sender": "Express Logistics <tracking-alert@dhl-delivery-service.com>",
+        "subject": "Delivery Exception: Priority Shipment on hold for {name}",
+        "body": (
+            "Notice for {name},\n\n"
+            "A priority corporate parcel addressed to you could not be delivered due to an incomplete desk/suite address. "
+            "The parcel is currently held at the local distribution facility.\n\n"
+            "To reschedule delivery or redirect to your current desk, please verify your shipping address:\n\n"
+            "👉 Confirm Delivery Address: {link}\n\n"
+            "Unclaimed shipments will be returned to sender after 48 hours.\n\n"
+            "Operations Team,\n"
+            "Express Courier Services"
+        )
+    },
+    "vpn_patch": {
+        "title": "Urgent VPN Client Security Update",
+        "sender": "InfoSec Operations <security-patch@globalprotect-vpn-update.net>",
+        "subject": "CRITICAL: Mandatory Security Patch for Remote VPN Access ({name})",
+        "body": (
+            "Team Alert,\n\n"
+            "Due to an active zero-day vulnerability in legacy VPN clients, all active personnel "
+            "(including {name}) are required to validate their remote access profile immediately.\n\n"
+            "Please access the internal deployment gateway to re-authenticate:\n\n"
+            "👉 Re-authenticate VPN Client: {link}\n\n"
+            "Connections using unpatched clients will be restricted at midnight.\n\n"
+            "Information Security Operations (SecOps)"
+        )
+    }
+}
+
+
+def generate_simulation_email(template_id, employee_name="Employee", tracking_url="http://127.0.0.1:5000/click/test", custom_prompt=None):
+    """
+    Generates realistic phishing simulation drill emails for internal awareness testing.
+    Can use built-in templates or generate custom scenarios using AI.
+    """
+    employee_name = employee_name.strip() or "Employee"
+
+    # If AI custom prompt requested and API key is set
+    if custom_prompt and API_KEY:
+        try:
+            sys_prompt = (
+                "You are an educational cybersecurity simulation crafter. Generate a realistic phishing drill email "
+                "for internal corporate employee security awareness training. "
+                "Output ONLY a raw JSON object with exactly these 3 string keys: 'sender', 'subject', 'body'. "
+                f"Make sure to embed the link: '{tracking_url}' into the body. "
+                f"Address the recipient as '{employee_name}'. Do not wrap in markdown quotes."
+            )
+            resp = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {API_KEY}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://github.com/Gautam/CyberAware-AI",
+                    "X-Title": "CyberAware AI"
+                },
+                json={
+                    "model": MODEL_NAME,
+                    "messages": [
+                        {"role": "system", "content": sys_prompt},
+                        {"role": "user", "content": f"Create an awareness simulation email for scenario: {custom_prompt}"}
+                    ],
+                    "temperature": 0.4,
+                    "max_tokens": 500
+                },
+                timeout=8
+            )
+            if resp.status_code == 200:
+                raw = resp.json()["choices"][0]["message"]["content"].strip()
+                raw = re.sub(r"^```(?:json)?\s*", "", raw)
+                raw = re.sub(r"\s*```$", "", raw)
+                data = json.loads(raw)
+                return {
+                    "sender": data.get("sender", "Simulation Alert <security@company.local>"),
+                    "subject": data.get("subject", "Action Required"),
+                    "body": data.get("body", f"Hello {employee_name}, please verify: {tracking_url}"),
+                    "source": "AI-Generated Custom Simulation"
+                }
+        except Exception as e:
+            print(f"Custom simulation generation fallback: {e}")
+
+    # Default to chosen template or fallback
+    tpl = SIMULATION_TEMPLATES.get(template_id, SIMULATION_TEMPLATES["it_password"])
+    return {
+        "sender": tpl["sender"],
+        "subject": tpl["subject"].replace("{name}", employee_name),
+        "body": tpl["body"].replace("{name}", employee_name).replace("{link}", tracking_url),
+        "source": tpl["title"]
+    }
+

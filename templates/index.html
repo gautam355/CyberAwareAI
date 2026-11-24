@@ -272,102 +272,205 @@
         <!-- ============================================================ -->
         <!-- TAB 2: PHISHING SIMULATION                                    -->
         <!-- ============================================================ -->
+        <!-- ============================================================ -->
+        <!-- TAB 2: PHISHING SIMULATION & EMAIL CRAFTER                    -->
+        <!-- ============================================================ -->
         <section id="tab-simulation" class="tab-content hidden space-y-6">
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Simulation Campaign Header Banner -->
+            <div class="bg-gradient-to-r from-red-950/40 via-slate-900 to-slate-900 border border-red-900/40 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2.5">
+                        <span class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </span>
+                        <h2 class="text-lg font-bold text-white">Phishing Simulation & Drill Studio</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1 max-w-2xl">
+                        Design and craft realistic phishing drill emails with embedded tracking links. When employees click, they are redirected to a teachable-moment micro-quiz to turn errors into security habits.
+                    </p>
+                </div>
+                <div class="flex items-center space-x-2 text-xs bg-slate-950/70 border border-slate-800 px-3.5 py-2 rounded-xl text-slate-300">
+                    <i class="fa-solid fa-shield-cat text-amber-400"></i>
+                    <span>Zero Malware — Pure Awareness Drill</span>
+                </div>
+            </div>
 
-                <!-- Link Generator -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
-                    <div class="border-b border-slate-800 pb-4">
-                        <h2 class="font-bold text-white flex items-center space-x-2">
-                            <i class="fa-solid fa-link text-red-400"></i>
-                            <span>Generate a Simulated Phishing Link</span>
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1">
-                            This creates a fake phishing link for testing. When an employee clicks it, 
-                            we record it and show them an educational page instead of actually attacking them.
-                        </p>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Column: Simulation Email Crafter Form (5 cols) -->
+                <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-envelope-open-text text-cyan-400"></i>
+                            <span>1. Configure Simulation Email</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Select your target and choose an educational attack scenario.</p>
                     </div>
 
                     <div class="space-y-4">
+                        <!-- Employee Target -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Select Employee to Test</label>
-                            <select id="simEmployee" class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-white outline-none">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Target Employee</label>
+                            <select id="simEmployee" onchange="autoGenerateSimulationEmail()" class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
                                 {% for emp in employees %}
-                                <option value="{{ emp.name }}">{{ emp.name }} — {{ emp.department }}</option>
+                                <option value="{{ emp.name }}">{{ emp.name }} ({{ emp.department }})</option>
                                 {% endfor %}
                             </select>
                         </div>
 
-                        <button onclick="generateSimLink()" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-2.5 rounded-xl text-sm transition">
-                            <i class="fa-solid fa-link mr-2"></i>Generate Phishing Test Link
+                        <!-- Template Selection -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Simulation Attack Pretext / Template</label>
+                            <select id="simTemplate" onchange="toggleCustomPrompt(); autoGenerateSimulationEmail();" class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                                <option value="it_password">💻 Microsoft 365 Password Expiry (Credential Phishing)</option>
+                                <option value="hr_payroll">💸 HR Salary & Direct Deposit Audit (Financial Lure)</option>
+                                <option value="package_delivery">📦 Express Courier Delivery Exception (Logistics Lure)</option>
+                                <option value="vpn_patch">🛡️ Urgent VPN Client Security Patch (Authority / IT Ops)</option>
+                                <option value="custom">✨ Custom Scenario (AI-Crafted Pretext)</option>
+                            </select>
+                        </div>
+
+                        <!-- Custom Prompt (Optional) -->
+                        <div id="customPromptBox" class="hidden space-y-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">Custom Pretext Description</label>
+                            <input type="text" id="simCustomPrompt" placeholder="e.g. Annual health insurance renewal or Google Drive link"
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2 text-xs text-white outline-none">
+                        </div>
+
+                        <!-- Action Button -->
+                        <button onclick="autoGenerateSimulationEmail()" id="btnCraftEmail" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Craft Simulation Email</span>
                         </button>
 
-                        <div id="simLinkResult" class="hidden bg-slate-950 border border-red-900/50 rounded-xl p-4 space-y-3">
-                            <p class="text-[11px] font-bold text-red-400 uppercase">
-                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Test Link Generated (Internal Use Only)
-                            </p>
+                        <!-- Tracking Link Direct Box -->
+                        <div class="pt-3 border-t border-slate-800 space-y-2">
+                            <label class="block text-[11px] font-semibold text-slate-400">Direct Simulated Tracking Link:</label>
                             <div class="flex items-center space-x-2">
                                 <input type="text" id="simUrl" readonly
-                                    class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs mono text-cyan-300">
-                                <button onclick="copyLink()" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-2 rounded-lg text-xs">
+                                    class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs mono text-cyan-300">
+                                <button onclick="copyLink()" title="Copy link" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg text-xs">
                                     <i class="fa-regular fa-copy"></i>
                                 </button>
                             </div>
-                            <a id="simOpen" href="#" target="_blank"
-                                class="block text-center bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-xs font-semibold transition">
-                                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Open Link in New Tab (Test It)
-                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Employee Status Table -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-                    <div class="border-b border-slate-800 pb-4">
-                        <h2 class="font-bold text-white flex items-center space-x-2">
-                            <i class="fa-solid fa-users text-cyan-400"></i>
-                            <span>Employee Click Tracking</span>
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1">
-                            Shows which employees clicked the phishing test link and need awareness training.
-                        </p>
+                <!-- Right Column: Live Simulated Email Inbox Preview (7 cols) -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-envelope text-red-400"></i>
+                                <span class="font-bold text-white text-sm">2. Simulated Email Preview (What the Employee Sees)</span>
+                            </div>
+                            <span id="previewTag" class="text-[10px] mono bg-slate-800 border border-slate-700 text-cyan-400 px-2 py-0.5 rounded-md">
+                                Microsoft 365 Password Expiry
+                            </span>
+                        </div>
+
+                        <!-- Realistic Email Header Envelope -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2 text-xs">
+                            <div class="flex items-center">
+                                <span class="text-slate-500 w-16 font-semibold">From:</span>
+                                <span id="previewSender" class="text-white font-medium mono text-[11px]">Microsoft 365 Support &lt;no-reply@m365-security-update.com&gt;</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-500 w-16 font-semibold">To:</span>
+                                <span id="previewRecipient" class="text-cyan-300 mono text-[11px]">Gautam &lt;gautam@company.local&gt;</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-500 w-16 font-semibold">Subject:</span>
+                                <span id="previewSubject" class="text-white font-bold text-xs">Action Required: Password Expiry Notification for Gautam</span>
+                            </div>
+                        </div>
+
+                        <!-- Email Body Area -->
+                        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 min-h-[170px] text-xs text-slate-300 leading-relaxed font-sans whitespace-pre-wrap select-text" id="previewBody">
+Select an employee and click "Craft Simulation Email" to generate the drill preview.
+                        </div>
                     </div>
 
-                    <div class="space-y-2.5">
-                        {% for emp in employees %}
-                        <div class="flex items-center justify-between p-3 rounded-xl border
-                            {% if emp.simulation_status == 'Clicked' %}bg-red-950/20 border-red-900/50
-                            {% elif emp.simulation_status == 'Trained' %}bg-emerald-950/20 border-emerald-900/50
-                            {% else %}bg-slate-950 border-slate-800{% endif %}">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center
+                    <!-- Action Bar -->
+                    <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyFullEmail()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition font-medium border border-slate-700">
+                                <i class="fa-regular fa-copy mr-1.5 text-cyan-400"></i>Copy Email Body
+                            </button>
+                            <button onclick="transferToScanner()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition font-medium border border-slate-700">
+                                <i class="fa-solid fa-vial-virus mr-1.5 text-amber-400"></i>Send to AI Scanner
+                            </button>
+                        </div>
+                        <a id="simOpen" href="#" target="_blank"
+                            class="text-xs bg-red-600 hover:bg-red-500 text-white font-semibold px-4 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-lg shadow-red-950">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>Test Simulation Link</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Employee Status Table (Full Width) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="font-bold text-white flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-users text-cyan-400"></i>
+                            <span>Employee Drill & Remediation Directory</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Real-time tracking of employee click posture and completed awareness training quizzes.
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-400 bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl">
+                        Total Monitored: <strong class="text-white">{{ employees | length }}</strong>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                    {% for emp in employees %}
+                    <div class="p-3.5 rounded-xl border flex flex-col justify-between space-y-3
+                        {% if emp.simulation_status == 'Clicked' %}bg-red-950/20 border-red-900/50
+                        {% elif emp.simulation_status == 'Trained' %}bg-emerald-950/20 border-emerald-900/50
+                        {% else %}bg-slate-950 border-slate-800{% endif %}">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center
                                     {% if emp.simulation_status == 'Clicked' %}bg-red-900/50 text-red-300
                                     {% elif emp.simulation_status == 'Trained' %}bg-emerald-900/50 text-emerald-300
                                     {% else %}bg-slate-800 text-slate-300{% endif %}">
                                     {{ emp.name[0] }}
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-white">{{ emp.name }}</p>
-                                    <p class="text-[11px] text-slate-400">{{ emp.department }}</p>
+                                    <p class="text-xs font-bold text-white">{{ emp.name }}</p>
+                                    <p class="text-[10px] text-slate-400">{{ emp.department }}</p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between">
                             {% if emp.simulation_status == 'Clicked' %}
-                            <span class="text-[11px] font-bold bg-red-950 text-red-300 border border-red-800 px-2.5 py-1 rounded-full">
-                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Clicked — Training Needed
+                            <span class="text-[10px] font-bold text-red-400">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Clicked
                             </span>
+                            <span class="text-[9px] text-red-300/80 bg-red-950/80 px-2 py-0.5 rounded border border-red-900">Training Needed</span>
                             {% elif emp.simulation_status == 'Trained' %}
-                            <span class="text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded-full">
-                                <i class="fa-solid fa-check mr-1"></i>Trained & Aware
+                            <span class="text-[10px] font-bold text-emerald-400">
+                                <i class="fa-solid fa-check mr-1"></i>Trained
                             </span>
+                            <span class="text-[9px] text-emerald-300/80 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-900">Remediated</span>
                             {% else %}
-                            <span class="text-[11px] font-bold bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-full">
-                                <i class="fa-solid fa-shield mr-1"></i>No Click — Safe
+                            <span class="text-[10px] font-semibold text-slate-400">
+                                <i class="fa-solid fa-shield mr-1 text-slate-500"></i>Safe
                             </span>
+                            <span class="text-[9px] text-slate-500 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">No Clicks</span>
                             {% endif %}
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -626,20 +729,94 @@
                 btn.classList.add('bg-cyan-600', 'text-white');
             }
             if (id === 'dashboard') renderCharts();
+            if (id === 'simulation') autoGenerateSimulationEmail();
         }
 
-        // Generate phishing simulation link
-        function generateSimLink() {
-            const emp = document.getElementById('simEmployee').value;
+        // Phishing Simulation Email Crafter
+        let currentCraftedEmail = null;
+
+        function toggleCustomPrompt() {
+            const tpl = document.getElementById('simTemplate').value;
+            const box = document.getElementById('customPromptBox');
+            if (tpl === 'custom') {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        async function autoGenerateSimulationEmail() {
+            const empEl = document.getElementById('simEmployee');
+            if (!empEl) return;
+            const emp = empEl.value;
+            const tpl = document.getElementById('simTemplate').value;
+            const customPrompt = document.getElementById('simCustomPrompt') ? document.getElementById('simCustomPrompt').value : '';
+
             const url = window.location.origin + '/click/' + encodeURIComponent(emp);
             document.getElementById('simUrl').value = url;
             document.getElementById('simOpen').href = url;
-            document.getElementById('simLinkResult').classList.remove('hidden');
+
+            const btn = document.getElementById('btnCraftEmail');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Crafting...';
+            }
+
+            try {
+                const res = await fetch('/api/generate-simulation-email', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        employee: emp,
+                        template_id: tpl,
+                        custom_prompt: tpl === 'custom' ? customPrompt : ''
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.simulation_email) {
+                    currentCraftedEmail = data.simulation_email;
+                    document.getElementById('previewSender').innerText = currentCraftedEmail.sender;
+                    document.getElementById('previewRecipient').innerText = emp + ' <' + emp.toLowerCase() + '@company.local>';
+                    document.getElementById('previewSubject').innerText = currentCraftedEmail.subject;
+                    document.getElementById('previewBody').innerText = currentCraftedEmail.body;
+                    document.getElementById('previewTag').innerText = currentCraftedEmail.source;
+                }
+            } catch (err) {
+                console.error("Simulation email generation error:", err);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Craft Simulation Email';
+                }
+            }
         }
 
         function copyLink() {
             navigator.clipboard.writeText(document.getElementById('simUrl').value);
+            showToast("Tracking link copied!");
         }
+
+        function copyFullEmail() {
+            if (!currentCraftedEmail) return;
+            const full = `From: ${currentCraftedEmail.sender}\nSubject: ${currentCraftedEmail.subject}\n\n${currentCraftedEmail.body}`;
+            navigator.clipboard.writeText(full);
+            showToast("Simulation email copied to clipboard!");
+        }
+
+        function transferToScanner() {
+            if (!currentCraftedEmail) return;
+            const emp = document.getElementById('simEmployee').value;
+            document.getElementById('email_subject').value = currentCraftedEmail.subject;
+            document.getElementById('email_input').value = currentCraftedEmail.body;
+            document.getElementById('employee_name').value = emp;
+            switchTab('scanner');
+            showToast("Transferred to AI Scanner! Click 'Analyze With AI' to test.");
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            autoGenerateSimulationEmail();
+        });
 
         // Add employee
         async function addEmployee() {
