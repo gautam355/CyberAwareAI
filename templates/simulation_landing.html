@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Awareness Alert | CyberAware AI Teachable Moment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070c18;
+            color: #e2e8f0;
+        }
+        .grid-bg {
+            background-image: radial-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="min-h-screen grid-bg flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-3xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 my-8">
+        
+        <!-- Top Warning Header -->
+        <div class="text-center space-y-3">
+            <div class="w-16 h-16 rounded-2xl bg-rose-950/80 border-2 border-rose-600 flex items-center justify-center mx-auto text-rose-400 text-3xl shadow-lg shadow-rose-900/40">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="inline-block px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-xs font-bold uppercase tracking-wider">
+                Controlled Security Simulation Click Recorded
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black text-white">Oops, <span class="text-cyan-400">{{ employee }}</span>! You Just Clicked a Phishing Link.</h1>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+                Don’t worry — this was an authorized internal security drill conducted by <strong>CyberAware AI</strong>. No sensitive data was lost, but in a real-world cyberattack, your corporate credentials could have been compromised.
+            </p>
+        </div>
+
+        <!-- 3 Anatomy of this attack cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl space-y-2">
+                <div class="text-amber-400 text-sm font-bold flex items-center space-x-1.5">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>1. Artificial Urgency</span>
+                </div>
+                <p class="text-xs text-slate-400">
+                    Phishing attacks manipulate emotion, pushing you to click before thinking ("Expires in 2 hours").
+                </p>
+            </div>
+            <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl space-y-2">
+                <div class="text-rose-400 text-sm font-bold flex items-center space-x-1.5">
+                    <i class="fa-solid fa-link-slash"></i>
+                    <span>2. Mismatched Link</span>
+                </div>
+                <p class="text-xs text-slate-400">
+                    Hovering over links reveals fraudulent domains that don't match official company domains.
+                </p>
+            </div>
+            <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl space-y-2">
+                <div class="text-cyan-400 text-sm font-bold flex items-center space-x-1.5">
+                    <i class="fa-solid fa-user-lock"></i>
+                    <span>3. Credential Bait</span>
+                </div>
+                <p class="text-xs text-slate-400">
+                    Attackers impersonate IT, Microsoft, or HR asking you to enter passwords or approve MFA.
+                </p>
+            </div>
+        </div>
+
+        <!-- Interactive 3-Question Micro-Quiz for Immediate Training Clearance -->
+        <div id="quizSection" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center">
+                    <i class="fa-solid fa-graduation-cap text-cyan-400 mr-2"></i>
+                    60-Second Awareness Remediation Quiz
+                </h3>
+                <span class="text-xs text-slate-400">Pass to Clear Training Status</span>
+            </div>
+
+            <form id="microQuizForm" class="space-y-5">
+                <!-- Q1 -->
+                <div class="space-y-2">
+                    <p class="text-xs font-semibold text-slate-200">1. What is the safest first step when receiving an unexpected email claiming your account password will expire today?</p>
+                    <div class="space-y-1.5 text-xs text-slate-400">
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer">
+                            <input type="radio" name="q1" value="wrong" required>
+                            <span>Click the link immediately to prevent losing your email</span>
+                        </label>
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 cursor-pointer text-slate-300">
+                            <input type="radio" name="q1" value="correct">
+                            <span class="font-medium text-white">Contact the internal IT department or verify via official portal directly without clicking the link</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="space-y-2">
+                    <p class="text-xs font-semibold text-slate-200">2. Which of the following sender domains is a fraudulent lookalike (typosquatting) address?</p>
+                    <div class="space-y-1.5 text-xs text-slate-400">
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 cursor-pointer text-slate-300">
+                            <input type="radio" name="q2" value="correct" required>
+                            <span class="font-mono text-cyan-300">support@rnicrosoft.com (using 'r' and 'n' instead of 'm')</span>
+                        </label>
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer">
+                            <input type="radio" name="q2" value="wrong">
+                            <span class="font-mono">support@microsoft.com</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="space-y-2">
+                    <p class="text-xs font-semibold text-slate-200">3. If a sudden email from your CEO requests an urgent confidential wire transfer or gift card purchase, you should:</p>
+                    <div class="space-y-1.5 text-xs text-slate-400">
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer">
+                            <input type="radio" name="q3" value="wrong" required>
+                            <span>Quickly purchase the cards to show prompt dedication</span>
+                        </label>
+                        <label class="flex items-center space-x-2 p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500 cursor-pointer text-slate-300">
+                            <input type="radio" name="q3" value="correct">
+                            <span class="font-medium text-white">Call the executive directly or verify through standard corporate finance channels</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition">
+                    Submit Quiz & Certify Completion
+                </button>
+            </form>
+        </div>
+
+        <!-- Success Completion Badge (Hidden until quiz passed) -->
+        <div id="quizSuccessBox" class="hidden bg-emerald-950/40 border border-emerald-800 p-6 rounded-2xl text-center space-y-4">
+            <div class="w-14 h-14 rounded-full bg-emerald-900/60 text-emerald-400 text-2xl flex items-center justify-center mx-auto border-2 border-emerald-500">
+                <i class="fa-solid fa-certificate"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white">Congratulations, {{ employee }}!</h3>
+                <p class="text-xs text-emerald-300 mt-1">You scored 100% on the remediation quiz. Your status on the CyberAware SOC dashboard has been updated to <strong>Trained & Compliant</strong>.</p>
+            </div>
+            <a href="/" class="inline-block px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow transition">
+                Return to CyberAware AI Dashboard
+            </a>
+        </div>
+
+        <!-- Back to Dashboard footer link -->
+        <div class="text-center pt-2">
+            <a href="/" class="text-xs text-slate-400 hover:text-cyan-400 transition font-medium">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Return to CyberAware SOC Dashboard
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        const form = document.getElementById('microQuizForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const q1 = form.q1.value;
+            const q2 = form.q2.value;
+            const q3 = form.q3.value;
+
+            if (q1 === 'correct' && q2 === 'correct' && q3 === 'correct') {
+                try {
+                    await fetch('/api/complete-quiz', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            employee: '{{ employee }}',
+                            score: 100
+                        })
+                    });
+                    document.getElementById('quizSection').classList.add('hidden');
+                    document.getElementById('quizSuccessBox').classList.remove('hidden');
+                } catch (err) {
+                    alert("Error saving training status: " + err.message);
+                }
+            } else {
+                alert("Please review your answers. Read the explanations carefully and select the correct cybersecurity choices!");
+            }
+        });
+    </script>
+
+</body>
+</html>

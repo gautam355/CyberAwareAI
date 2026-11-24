@@ -1,0 +1,43 @@
+# Environment & Secrets
+.env
+*.env.local
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database
+cyberaware.db
+*.sqlite3
+
+# Dev & Thesis internal files
+test_live.py
+_thesis_assets/
+_thesis_render/
+generate_cyberaware_thesis.py
+CyberAware_AI_Thesis_*.docx
+
+# OS Specific
+.DS_Store
+Thumbs.db

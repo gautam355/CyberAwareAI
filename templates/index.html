@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberAware AI | Phishing Detection & Employee Awareness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0a0f1e; color: #e2e8f0; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .grid-bg {
+            background-image: radial-gradient(rgba(30, 41, 59, 0.6) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .blink { animation: blink 2s infinite; }
+    </style>
+</head>
+
+<body class="min-h-screen grid-bg">
+
+    <!-- ===== HEADER ===== -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center">
+                    <i class="fa-solid fa-shield-halved text-white"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold text-white">CyberAware AI</span>
+                    <p class="text-[11px] text-slate-400">AI-Powered Phishing Detection & Employee Training</p>
+                </div>
+            </div>
+
+            <!-- Nav Tabs -->
+            <nav class="hidden md:flex items-center space-x-1 bg-slate-800/60 p-1 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('scanner')" id="tab-btn-scanner" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg bg-cyan-600 text-white transition">
+                    <i class="fa-solid fa-magnifying-glass mr-1.5"></i>Email Scanner
+                </button>
+                <button onclick="switchTab('simulation')" id="tab-btn-simulation" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-fish-fins mr-1.5"></i>Phishing Simulation
+                </button>
+                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-chart-bar mr-1.5"></i>Dashboard
+                </button>
+                <button onclick="switchTab('training')" id="tab-btn-training" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-graduation-cap mr-1.5"></i>Awareness Tips
+                </button>
+            </nav>
+
+            <!-- Status -->
+            <div class="flex items-center space-x-2 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-green-400 blink"></span>
+                <span class="text-xs font-medium text-green-400">System Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+
+        <!-- ============================================================ -->
+        <!-- TAB 1: EMAIL SCANNER                                          -->
+        <!-- ============================================================ -->
+        <section id="tab-scanner" class="tab-content space-y-6">
+
+            <!-- Demo Scenario Buttons -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center gap-3">
+                <div class="flex items-center space-x-2 mr-2">
+                    <i class="fa-solid fa-bolt text-cyan-400 text-sm"></i>
+                    <span class="text-sm font-semibold text-white">Try a Demo Scenario:</span>
+                </div>
+                {% for sample in sample_emails %}
+                <button onclick="loadSample({{ loop.index0 }})"
+                    class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-cyan-500 text-slate-200 px-3 py-1.5 rounded-lg transition font-medium">
+                    <i class="fa-solid fa-vial text-cyan-400 mr-1.5"></i>{{ sample.title }}
+                </button>
+                {% endfor %}
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+                <!-- Left: Input Form -->
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div class="border-b border-slate-800 pb-4">
+                        <h2 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-envelope-open-text text-cyan-400"></i>
+                            <span>Analyze a Suspicious Email</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Paste any email below — the AI will tell you if it's a phishing attempt.</p>
+                    </div>
+
+                    <form id="scanForm" method="POST" action="/" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Employee Name</label>
+                            <input type="text" name="employee" id="emp_name" value="Gautam" required
+                                list="empList"
+                                placeholder="Who received this email?"
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition">
+                            <datalist id="empList">
+                                {% for emp in employees %}
+                                <option value="{{ emp.name }}">{{ emp.department }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Employee Email Address</label>
+                            <input type="email" name="email_id" id="emp_email" value="gautam@company.local" required
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Email Subject</label>
+                            <input type="text" name="subject" id="email_subject"
+                                placeholder="e.g. URGENT: Your account will be suspended"
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <label class="text-xs font-semibold text-slate-300">Email Body (Paste Here)</label>
+                                <button type="button" onclick="document.getElementById('email_body').value=''"
+                                    class="text-[11px] text-cyan-400 hover:underline">Clear</button>
+                            </div>
+                            <textarea name="email" id="email_body" rows="8" required
+                                placeholder="Paste the suspicious email content here..."
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none transition resize-none"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 rounded-xl text-sm transition shadow-lg shadow-cyan-900/30">
+                            <i class="fa-solid fa-magnifying-glass mr-2"></i>Analyze This Email
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Analysis Result -->
+                <div class="lg:col-span-3 space-y-4">
+
+                    {% if result %}
+                    <!-- ===== RESULT CARD ===== -->
+                    <div class="bg-slate-900 border {% if result.risk_level == 'HIGH' %}border-red-700{% elif result.risk_level == 'MEDIUM' %}border-amber-600{% else %}border-emerald-700{% endif %} rounded-2xl p-6 space-y-5">
+
+                        <!-- Risk Header -->
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center space-x-4">
+                                <!-- Big Percentage Circle -->
+                                <div class="w-20 h-20 rounded-full flex flex-col items-center justify-center border-2
+                                    {% if result.risk_level == 'HIGH' %}border-red-500 bg-red-950/50 text-red-400
+                                    {% elif result.risk_level == 'MEDIUM' %}border-amber-500 bg-amber-950/50 text-amber-400
+                                    {% else %}border-emerald-500 bg-emerald-950/50 text-emerald-400{% endif %}">
+                                    <span class="text-2xl font-black mono">{{ result.phishing_probability }}%</span>
+                                    <span class="text-[9px] font-bold uppercase tracking-wide mt-0.5">Phishing</span>
+                                </div>
+                                <div>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                        {% if result.risk_level == 'HIGH' %}bg-red-900/60 text-red-300 border border-red-700
+                                        {% elif result.risk_level == 'MEDIUM' %}bg-amber-900/60 text-amber-300 border border-amber-700
+                                        {% else %}bg-emerald-900/60 text-emerald-300 border border-emerald-700{% endif %}">
+                                        {% if result.risk_level == 'HIGH' %}⚠ High Risk — Likely Phishing
+                                        {% elif result.risk_level == 'MEDIUM' %}🔶 Medium Risk — Suspicious
+                                        {% else %}✅ Low Risk — Looks Safe{% endif %}
+                                    </span>
+                                    <p class="text-sm font-semibold text-white mt-1.5">For: {{ result.employee_name }}</p>
+                                    <p class="text-[11px] text-slate-400 mono">{{ result.engine_used }}</p>
+                                </div>
+                            </div>
+                            {% if result.scan_id %}
+                            <a href="/report/{{ result.scan_id }}" target="_blank"
+                                class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl transition flex items-center space-x-1.5">
+                                <i class="fa-solid fa-file-lines text-cyan-400"></i>
+                                <span>View Full Report</span>
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <!-- What tactics did this email use? -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
+                            <p class="text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                                <i class="fa-solid fa-brain mr-1.5"></i>Manipulation Tactics Used
+                                <span class="text-slate-500 font-normal ml-2 normal-case">(How is this email trying to trick you?)</span>
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                {% if result.emotional_triggers is string %}
+                                    <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">{{ result.emotional_triggers }}</span>
+                                {% else %}
+                                    {% for t in result.emotional_triggers %}
+                                    <span class="px-3 py-1 rounded-lg text-xs font-medium bg-cyan-950 text-cyan-300 border border-cyan-800">{{ t }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Red Flags Found -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
+                            <p class="text-xs font-bold text-red-400 uppercase tracking-wider">
+                                <i class="fa-solid fa-flag mr-1.5"></i>Red Flags Detected
+                                <span class="text-slate-500 font-normal ml-2 normal-case">(Specific warning signs in this email)</span>
+                            </p>
+                            <ul class="space-y-1.5 mt-1">
+                                {% if result.red_flags is string %}
+                                    <li class="flex items-start space-x-2 text-xs text-slate-300">
+                                        <i class="fa-solid fa-xmark text-red-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>{{ result.red_flags }}</span>
+                                    </li>
+                                {% else %}
+                                    {% for flag in result.red_flags %}
+                                    <li class="flex items-start space-x-2 text-xs text-slate-300">
+                                        <i class="fa-solid fa-xmark text-red-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>{{ flag }}</span>
+                                    </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <!-- Why is this suspicious? -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
+                            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                                <i class="fa-solid fa-circle-info text-cyan-400 mr-1.5"></i>Analysis Summary
+                            </p>
+                            <p class="text-sm text-slate-300 leading-relaxed">{{ result.reason }}</p>
+                        </div>
+
+                        <!-- What should this employee do? -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
+                            <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                                <i class="fa-solid fa-person-chalkboard mr-1.5"></i>Training Recommendation
+                            </p>
+                            <p class="text-sm font-semibold text-white">Status: {{ result.training_status }}</p>
+                            <p class="text-sm text-slate-300">{{ result.training_recommendation }}</p>
+                        </div>
+
+                        <!-- Safety Tips -->
+                        <div class="bg-emerald-950/30 border border-emerald-800/50 rounded-xl p-4 space-y-2">
+                            <p class="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                                <i class="fa-solid fa-shield-check mr-1.5"></i>How to Stay Safe
+                            </p>
+                            <div class="text-xs text-emerald-200 leading-relaxed whitespace-pre-line mono">{{ result.safety_tips }}</div>
+                        </div>
+
+                    </div>
+
+                    {% else %}
+                    <!-- Empty state -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center space-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto text-cyan-400 text-2xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-white">Ready to Analyze</h3>
+                            <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+                                Paste any suspicious email on the left, or click one of the demo scenarios above to see the AI in action.
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- TAB 2: PHISHING SIMULATION                                    -->
+        <!-- ============================================================ -->
+        <section id="tab-simulation" class="tab-content hidden space-y-6">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Link Generator -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                    <div class="border-b border-slate-800 pb-4">
+                        <h2 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-link text-red-400"></i>
+                            <span>Generate a Simulated Phishing Link</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">
+                            This creates a fake phishing link for testing. When an employee clicks it, 
+                            we record it and show them an educational page instead of actually attacking them.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Select Employee to Test</label>
+                            <select id="simEmployee" class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-2.5 text-sm text-white outline-none">
+                                {% for emp in employees %}
+                                <option value="{{ emp.name }}">{{ emp.name }} — {{ emp.department }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button onclick="generateSimLink()" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                            <i class="fa-solid fa-link mr-2"></i>Generate Phishing Test Link
+                        </button>
+
+                        <div id="simLinkResult" class="hidden bg-slate-950 border border-red-900/50 rounded-xl p-4 space-y-3">
+                            <p class="text-[11px] font-bold text-red-400 uppercase">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Test Link Generated (Internal Use Only)
+                            </p>
+                            <div class="flex items-center space-x-2">
+                                <input type="text" id="simUrl" readonly
+                                    class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs mono text-cyan-300">
+                                <button onclick="copyLink()" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-2 rounded-lg text-xs">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                            <a id="simOpen" href="#" target="_blank"
+                                class="block text-center bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-xs font-semibold transition">
+                                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Open Link in New Tab (Test It)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employee Status Table -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div class="border-b border-slate-800 pb-4">
+                        <h2 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-users text-cyan-400"></i>
+                            <span>Employee Click Tracking</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Shows which employees clicked the phishing test link and need awareness training.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2.5">
+                        {% for emp in employees %}
+                        <div class="flex items-center justify-between p-3 rounded-xl border
+                            {% if emp.simulation_status == 'Clicked' %}bg-red-950/20 border-red-900/50
+                            {% elif emp.simulation_status == 'Trained' %}bg-emerald-950/20 border-emerald-900/50
+                            {% else %}bg-slate-950 border-slate-800{% endif %}">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center
+                                    {% if emp.simulation_status == 'Clicked' %}bg-red-900/50 text-red-300
+                                    {% elif emp.simulation_status == 'Trained' %}bg-emerald-900/50 text-emerald-300
+                                    {% else %}bg-slate-800 text-slate-300{% endif %}">
+                                    {{ emp.name[0] }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">{{ emp.name }}</p>
+                                    <p class="text-[11px] text-slate-400">{{ emp.department }}</p>
+                                </div>
+                            </div>
+                            {% if emp.simulation_status == 'Clicked' %}
+                            <span class="text-[11px] font-bold bg-red-950 text-red-300 border border-red-800 px-2.5 py-1 rounded-full">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Clicked — Training Needed
+                            </span>
+                            {% elif emp.simulation_status == 'Trained' %}
+                            <span class="text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded-full">
+                                <i class="fa-solid fa-check mr-1"></i>Trained & Aware
+                            </span>
+                            {% else %}
+                            <span class="text-[11px] font-bold bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-full">
+                                <i class="fa-solid fa-shield mr-1"></i>No Click — Safe
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- TAB 3: DASHBOARD / ANALYTICS                                  -->
+        <!-- ============================================================ -->
+        <section id="tab-dashboard" class="tab-content hidden space-y-6">
+
+            <!-- Stat Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Emails Scanned</p>
+                    <h3 class="text-3xl font-black text-white mt-1 mono">{{ metrics.total_scans }}</h3>
+                    <p class="text-[11px] text-cyan-400 mt-1"><i class="fa-solid fa-magnifying-glass mr-1"></i>Total analyses run</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">High Risk Detected</p>
+                    <h3 class="text-3xl font-black text-red-400 mt-1 mono">{{ metrics.high_risk_scans }}</h3>
+                    <p class="text-[11px] text-red-400 mt-1"><i class="fa-solid fa-exclamation-circle mr-1"></i>Phishing emails found</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Simulation CTR</p>
+                    <h3 class="text-3xl font-black text-amber-400 mt-1 mono">{{ metrics.click_through_rate }}%</h3>
+                    <p class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-mouse-pointer mr-1"></i>{{ metrics.sim_clicked }} of {{ metrics.total_employees }} clicked</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Training Done</p>
+                    <h3 class="text-3xl font-black text-emerald-400 mt-1 mono">{{ metrics.compliance_rate }}%</h3>
+                    <p class="text-[11px] text-emerald-400 mt-1"><i class="fa-solid fa-graduation-cap mr-1"></i>Completed training</p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <h3 class="font-bold text-sm text-white mb-1">Risk Breakdown</h3>
+                    <p class="text-xs text-slate-400 mb-4">Distribution of scanned emails by risk level</p>
+                    <div class="h-56"><canvas id="riskChart"></canvas></div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <h3 class="font-bold text-sm text-white mb-1">Department Vulnerability</h3>
+                    <p class="text-xs text-slate-400 mb-4">Which departments had employees click phishing links</p>
+                    <div class="h-56"><canvas id="deptChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Add Employee -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="font-bold text-white">Employee Directory</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Manage the employees enrolled in the awareness program</p>
+                    </div>
+                    <button onclick="document.getElementById('addBox').classList.toggle('hidden')"
+                        class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-user-plus mr-1"></i>Add Employee
+                    </button>
+                </div>
+
+                <div id="addBox" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <p class="text-xs font-bold text-cyan-400">Add New Employee</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input id="newName" placeholder="Full Name" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none">
+                        <input id="newEmail" placeholder="Work Email" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none">
+                        <select id="newDept" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none">
+                            <option>Engineering</option>
+                            <option>Finance</option>
+                            <option>Human Resources</option>
+                            <option>Cybersecurity</option>
+                            <option>Operations</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <button onclick="document.getElementById('addBox').classList.add('hidden')" class="text-xs px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+                        <button onclick="addEmployee()" class="text-xs px-3 py-1.5 bg-cyan-600 text-white rounded-lg font-semibold">Save</button>
+                    </div>
+                </div>
+
+                <table class="w-full text-xs">
+                    <thead class="text-[11px] font-semibold text-slate-400 uppercase border-y border-slate-800">
+                        <tr>
+                            <th class="py-2.5 px-3 text-left">Name</th>
+                            <th class="py-2.5 px-3 text-left">Department</th>
+                            <th class="py-2.5 px-3 text-left">Status</th>
+                            <th class="py-2.5 px-3 text-left">Last Activity</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-300">
+                        {% for emp in employees %}
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-3 px-3 font-medium text-white">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-6 h-6 rounded bg-slate-800 text-xs flex items-center justify-center text-cyan-400 font-bold">{{ emp.name[0] }}</span>
+                                    <div>
+                                        <span class="block">{{ emp.name }}</span>
+                                        <span class="text-[10px] text-slate-500 mono">{{ emp.email }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-3">{{ emp.department }}</td>
+                            <td class="py-3 px-3">
+                                {% if emp.simulation_status == 'Clicked' %}
+                                <span class="text-[10px] font-bold bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded-full">Training Required</span>
+                                {% elif emp.simulation_status == 'Trained' %}
+                                <span class="text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full">Trained</span>
+                                {% else %}
+                                <span class="text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-full">Safe</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3 px-3 text-slate-500 mono text-[11px]">{{ emp.clicked_at or emp.created_at or '—' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- TAB 4: AWARENESS TIPS                                         -->
+        <!-- ============================================================ -->
+        <section id="tab-training" class="tab-content hidden space-y-6">
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white">Phishing Awareness — What Every Employee Should Know</h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    Over 90% of cyberattacks start with a phishing email. Here's how to spot and avoid them.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-cyan-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950 border border-cyan-800 flex items-center justify-center text-cyan-400">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <h3 class="font-bold text-white">Urgency is a Red Flag</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Phishing emails always create a sense of panic — "Your account expires in 2 hours!", "Act NOW or lose access". 
+                        Legitimate companies don't rush you like this. <strong class="text-white">If you feel pressured, slow down.</strong>
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-red-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-950 border border-red-800 flex items-center justify-center text-red-400">
+                            <i class="fa-solid fa-link"></i>
+                        </div>
+                        <h3 class="font-bold text-white">Check the Link Before Clicking</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Hover over any link to see the real URL. Attackers use tricks like <code class="text-cyan-300 bg-slate-800 px-1 rounded">rnicrosoft.com</code> (r+n looks like m).
+                        <strong class="text-white">Never click — go directly to the official website.</strong>
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-amber-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-950 border border-amber-800 flex items-center justify-center text-amber-400">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <h3 class="font-bold text-white">Verify Before You Trust Authority</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Attackers pretend to be your CEO, IT team, or HR. If your "boss" emails asking for a wire transfer or gift cards — 
+                        <strong class="text-white">call them directly</strong> to verify. Emails can be faked.
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-emerald-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h3 class="font-bold text-white">Never Share Your Password</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Real IT teams will NEVER ask for your password. If any email or website is asking for your credentials — 
+                        it's a phishing attempt. <strong class="text-white">Report it immediately.</strong>
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-blue-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800 flex items-center justify-center text-blue-400">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h3 class="font-bold text-white">Check the Sender's Email Address</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The display name can say "Microsoft Support" but the actual address might be 
+                        <code class="text-red-300 bg-slate-800 px-1 rounded">support@gmail.com</code>. 
+                        <strong class="text-white">Always check the actual email address</strong>, not just the name shown.
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 hover:border-purple-600 transition">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <h3 class="font-bold text-white">When in Doubt, Pick Up the Phone</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        If you're unsure about an email — especially one about passwords, money, or urgent action — 
+                        <strong class="text-white">call the person directly</strong>. 2 minutes on the phone can save hours of damage control.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="border-t border-slate-800 py-5 mt-8 text-center text-xs text-slate-500">
+        <p>CyberAware AI — Built by <strong class="text-slate-400">Gautam</strong></p>
+    </footer>
+
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        const SAMPLES = {{ sample_emails | tojson }};
+
+        // Load a demo scenario into the form
+        function loadSample(i) {
+            const s = SAMPLES[i];
+            if (!s) return;
+            document.getElementById('email_subject').value = s.subject;
+            document.getElementById('email_body').value = s.content;
+            switchTab('scanner');
+            // Toast notification
+            const t = document.createElement('div');
+            t.className = "fixed bottom-5 right-5 bg-cyan-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg z-50";
+            t.innerHTML = `<i class="fa-solid fa-check-circle mr-1.5"></i>Loaded: ${s.title}`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2500);
+        }
+
+        // Tab switching
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-600', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            document.getElementById('tab-' + id).classList.remove('hidden');
+            const btn = document.getElementById('tab-btn-' + id);
+            if (btn) {
+                btn.classList.remove('text-slate-300');
+                btn.classList.add('bg-cyan-600', 'text-white');
+            }
+            if (id === 'dashboard') renderCharts();
+        }
+
+        // Generate phishing simulation link
+        function generateSimLink() {
+            const emp = document.getElementById('simEmployee').value;
+            const url = window.location.origin + '/click/' + encodeURIComponent(emp);
+            document.getElementById('simUrl').value = url;
+            document.getElementById('simOpen').href = url;
+            document.getElementById('simLinkResult').classList.remove('hidden');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(document.getElementById('simUrl').value);
+        }
+
+        // Add employee
+        async function addEmployee() {
+            const name = document.getElementById('newName').value.trim();
+            const email = document.getElementById('newEmail').value.trim();
+            const dept = document.getElementById('newDept').value;
+            if (!name) return alert('Please enter a name.');
+            const res = await fetch('/api/employees/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, email, department: dept})
+            });
+            const data = await res.json();
+            if (data.success) window.location.reload();
+            else alert('Error: ' + data.error);
+        }
+
+        // Charts
+        let riskChartInst = null, deptChartInst = null;
+        function renderCharts() {
+            if (riskChartInst) riskChartInst.destroy();
+            if (deptChartInst) deptChartInst.destroy();
+
+            const riskCtx = document.getElementById('riskChart').getContext('2d');
+            riskChartInst = new Chart(riskCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Risk (Phishing)', 'Medium Risk', 'Low Risk (Safe)'],
+                    datasets: [{
+                        data: (function(){
+                            var hi = {{ metrics.high_risk_scans or 1 }};
+                            var tot = {{ metrics.total_scans or 4 }};
+                            var rest = Math.max(tot - hi, 0);
+                            var med = rest > 0 ? Math.ceil(rest / 2) : 1;
+                            var low = rest > 0 ? Math.floor(rest / 2) : 2;
+                            return [hi, med, low];
+                        })(),
+                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
+                        borderColor: '#0f172a',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } }
+                }
+            });
+
+            const deptCtx = document.getElementById('deptChart').getContext('2d');
+            const deptLabels = [{% for d in metrics.department_stats %}'{{ d.department }}',{% endfor %}];
+            const deptVuln = [{% for d in metrics.department_stats %}{{ d.vulnerable }},{% endfor %}];
+            const deptTotal = [{% for d in metrics.department_stats %}{{ d.total }},{% endfor %}];
+            deptChartInst = new Chart(deptCtx, {
+                type: 'bar',
+                data: {
+                    labels: deptLabels.length ? deptLabels : ['Engineering', 'Finance', 'HR'],
+                    datasets: [
+                        { label: 'Clicked Phishing Link', data: deptVuln.length ? deptVuln : [1,2,1], backgroundColor: '#ef4444', borderRadius: 5 },
+                        { label: 'Total Employees', data: deptTotal.length ? deptTotal : [3,4,2], backgroundColor: '#1e293b', borderRadius: 5 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                        y: { ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: '#1e293b' } }
+                    },
+                    plugins: { legend: { position: 'top', labels: { color: '#94a3b8', font: { size: 11 } } } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
